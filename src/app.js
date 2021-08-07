@@ -4,6 +4,8 @@
  const mongoose=require('mongoose');
 const { json, urlencoded } = require('body-parser');
 const cors=require('cors');
+const { dbConfig } = require('./config/secret');
+
 
 
 
@@ -11,7 +13,7 @@ const app=express.Router();
 
 mongoose.Promise=global.Promise;
 
-mongoose.connect('mongodb://localhost/pass-reset',{useNewUrlParser:true})
+mongoose.connect(dbConfig.url,{useNewUrlParser:true})
 .then(()=>console.log('succesfully mongo database server connected'))
 
 .catch(()=>console.log("mongodb server not connected yet??"))
@@ -31,5 +33,5 @@ app.use(cookieParser())
 const port=process.env.Port | 8000;
 
 server.listen(port,()=>{
-  console.log('server listen',port,'now.')
+  console.log('server listen on ',dbConfig.url,'with',port,' port now.')
 })
