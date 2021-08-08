@@ -7,17 +7,16 @@ const crypto=require("crypto");
 
 
 const nodemailer=require("nodemailer");
-const { AsyncAction } = require("rxjs/internal/scheduler/AsyncAction");
-const user = require("../modals/user");
-const passwordResetToken=require("../modals/reset-token");
+const User = require("../modals/user");
+const PasswordResetToken=require("../modals/reset-token");
 
 
 
 
 module.exports={
 
-async createUser(req,res){
-const userEmail=await user.findOne({
+  async CreateUser(req, res) {
+const userEmail=await User.findOne({
   email:req.body.email
 });
 
@@ -27,7 +26,7 @@ if(userEmail){
   return res.status(409).json({message:'Email already exist'});
 }
 else{
-     const userName=await user.findOne({
+     const userName=await User.findOne({
      username:req.body.username
 
       });
@@ -52,7 +51,7 @@ else{
            };
 
 
-          user.create(body)
+          User.create(body)
 
            .then(user=>{
              res.status(201).json({message:'User created successfully',user});
@@ -78,12 +77,13 @@ else{
 //creating resetPassword controller function
 
 
-async function ResetPassword(req,res){
+module.exports={
+  async ResetPassword(req, res) {
      if(!req.body.email){
        return res.status(500).json({message:'Email is required'});
      }
 
-     const user=await user.findOne({
+     const user=await User.findOne({
        email:req.body.email
      });
 
@@ -92,16 +92,16 @@ async function ResetPassword(req,res){
        .json({message:'Email does not exist'})
      }
 
-     var resettoken=new passwordResetToken({_userId:user._id,resettoken:crypto.randomBytes(16).toString('hex')});
+     var resettoken=new PasswordResetToken({_userId:user._id,resettoken:crypto.randomBytes(16).toString('hex')});
      resettoken.save(function(error){
        if(error){
          return res.status(500).send({msg:err.message});
        }
 
        else{
-       passwordResetToken.find({_userId:user._id,resettoken:{$ne:resettoken.resettoken}})
+       PasswordResetToken.find({_userId:user._id,resettoken:{$ne:resettoken.resettoken}})//$ne==where not
        .remove().exec();
-       res.status(200).json({message:'Res password successfully'});
+       res.status(200).json({message:'Reset password successfully'});
 
        var transporter=nodemailer.createTransport({
          service:'Gmail',
@@ -141,4 +141,98 @@ async function ResetPassword(req,res){
             })
 
 
+}
+}
+
+
+
+
+
+module.exports={
+  async ValidPasswordToken(req, res) {
+  if(!req.body.resettoken){
+    return res.status(500)
+    .json({message:'Token is required'});
+  }
+
+
+  const user=await PasswordResetToken.findOne({
+    resettoken:req.body.resettoken
+  });
+
+
+
+  if(!user){
+    return res.status(409).json({message:'Invalid URL'});
+  }
+
+User.findOneAndUpdate({
+  _id:user._userId
+})
+.then(()=>{
+
+res.status(200).json({message:'Token verified successfully.'});
+})
+
+.catch((err)=>{
+return res.status(500).send({msg:err.message});
+
+})
+
+}
+}
+
+
+
+
+
+
+module.exports={
+  async NewPassword(req, res) {
+
+  PasswordResetToken.findOne({resettoken:req.body.resettoken},function(err,userToken,next){
+
+    if(!userToken){
+    return res.status(409).json({message:'Token has expired'});
+    }
+
+
+    User.findOne({
+      _id:userToken._userId
+    },function(error,userEmail,next){
+
+      if(!userEmail){
+        return res.status(409).json({message:'User does not exist'});
+
+      }
+
+      else{
+        return bcrypt.hash(req.body.newpassword,10,(err,hash)=>{
+          if(err){
+            return res.status(400).json({message:'Error hashing password'});
+          }
+
+
+          userEmail.password=hash;
+          userEmail.save(function(err){
+            if(err){
+              return res.status(400).json({message:'Password can not reset'});
+            }
+            else{
+              userToken.remove();
+              return res.status(201).json({message:'Password reset successfully'});
+            }
+          })
+        })
+      }
+
+
+    });
+
+
+  });
+
+
+
+}
 }

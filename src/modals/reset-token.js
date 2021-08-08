@@ -1,12 +1,13 @@
 const mongoose=require('mongoose');
 
-const
+
 const resetTokenSchema=new mongoose.Schema({
   _userId:{
     type:mongoose.Schema.Types.ObjectId,
-    required:true
+    required:true,
+    ref: 'User'
   },
-  ref:'User',
+
 
 resetToken:{
   type:String,

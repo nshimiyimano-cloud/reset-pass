@@ -1,9 +1,9 @@
 const bcrypt=require('bcrypt');
 const mongoose=require('mongoose');
-const Schema=mongoose.Schema;
 
 
-const userSchema=new Schema({
+
+const userSchema=new mongoose.Schema({
 username:{
   type:String,
   min:[5,'Too short, min is 5 characters'],

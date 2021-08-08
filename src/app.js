@@ -5,11 +5,12 @@
 const { json, urlencoded } = require('body-parser');
 const cors=require('cors');
 const { dbConfig } = require('./config/secret');
+const auth= require('./routes/authRoutes');
 
 
 
 
-const app=express.Router();
+const app=express();
 
 mongoose.Promise=global.Promise;
 
@@ -29,6 +30,8 @@ app.use(cors());
 app.use(express(json({limit:'500mb'})));
 app.use(urlencoded({extended:true,limit:'500mb'}));
 app.use(cookieParser())
+
+app.use('/api/resetpassword',auth)
 
 const port=process.env.Port | 8000;
 
