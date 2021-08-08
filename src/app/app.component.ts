@@ -9,8 +9,5 @@ export class AppComponent {
   title = 'reset-pass';
 
 
-  courses=[
-    'chemistry',
-    'mathematics'
-  ]
+
 }
