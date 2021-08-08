@@ -24,4 +24,4 @@ createdAt:{
 );
 
 
-module.exports=mongoose.model('passwordResetToken',resetTokenSchema);
+module.exports=mongoose.model('PasswordResetToken',resetTokenSchema);
