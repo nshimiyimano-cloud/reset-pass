@@ -9,7 +9,7 @@ import { AuthService } from '../auth.service';
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.css']
 })
-export class SignupComponent implements OnInit {
+export class SignupComponent implements OnInit{
 
 SignupForm!:FormGroup;
 forbiddenEmails:any;
@@ -21,13 +21,11 @@ private auth:AuthService,
 private router:Router
 
   ) {
-    this.buildSignupForm();
+   this.buildSignupForm();
   }
 
 
 
-  ngOnInit(): void {
-  }
 
 
   private buildSignupForm(){
@@ -41,6 +39,7 @@ private router:Router
   onSubmit(){
     this.SignupForm.reset();
   }
+
 signupUser(){
 this.auth.registerUser(this.SignupForm.value).subscribe(
   (data:any)=>{
@@ -66,6 +65,24 @@ this.auth.registerUser(this.SignupForm.value).subscribe(
   }
 );
 
+}
+
+get username(){
+  return this.SignupForm.get('username')
+}
+
+
+get email(){
+  return this.SignupForm.get('email')
+}
+
+get password(){
+  return this.SignupForm.get('password')
+}
+
+
+
+ngOnInit(): void {
 }
 
 }

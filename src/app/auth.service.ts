@@ -1,19 +1,19 @@
 import { Injectable } from '@angular/core';
-
 import {HttpClient} from "@angular/common/http";
 import { Observable } from 'rxjs';
 
-Injectable({
+const BASEURL = 'http://localhost:3000/api/resetpassword';
+
+
+@Injectable({
   providedIn: 'root'
 })
 
-const BASEURL = 'http://localhost:3000/api/resetpassword';
 
 export class AuthService {
 
+
   constructor(private Http:HttpClient) { }
-
-
 
 
 
@@ -40,4 +40,32 @@ export class AuthService {
   }
 
 
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

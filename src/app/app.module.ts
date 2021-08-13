@@ -8,6 +8,10 @@ import { SignupComponent } from './signup/signup.component';
 import { RequestResetComponent } from './request-reset/request-reset.component';
 import { ResponseResetComponent } from './response-reset/response-reset.component';
 import { RouterModule, Routes } from '@angular/router';
+import { FormBuilder,ReactiveFormsModule } from '@angular/forms';
+import { AuthService } from './auth.service';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+
 
 const routes: Routes = [
 {
@@ -53,12 +57,16 @@ const routes: Routes = [
     BrowserModule,
     AppRoutingModule,
     RouterModule.forRoot(routes),
+    HttpClientModule,
+    ReactiveFormsModule
     ],
 
   exports:[RouterModule],
 
 
-  providers: [],
+  providers: [FormBuilder,AuthService],
+
+
   bootstrap: [AppComponent]
 })
 export class AppModule { }

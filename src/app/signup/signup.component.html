@@ -1,1 +1,82 @@
-<p>signup works!</p>
+
+
+
+
+
+<div class=" container-fluid form">
+     <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+          <div class="card my-5">
+              <div class="card-body">
+                   <h5 class="card-title text-center">Sign Up</h5>
+
+              </div>
+                 <div id="errorMsg" *ngIf="errorMessage">
+                   <span>{{errorMessage}}</span>
+
+                 </div>
+                 <form action="">
+
+                   <div class="form-group form-signup p-2">
+                     <input  _ngcontent-c0="" class="form-control form-control-lg" placeholder="Username"
+                     type="text" id="username" formControlName="username" />
+                     <span *ngIf="!username?.valid && username?.touched"
+                     class="help-block"
+                     >
+                     Please enter a valid username
+
+                     </span>
+
+
+                   </div>
+
+
+
+                   <div class="form-group form-signup p-2">
+                    <input  _ngcontent-c0="" class="form-control form-control-lg" placeholder="Email"
+                    type="text" id="email" formControlName="email" />
+                    <span *ngIf="!email?.valid && email?.touched"
+                    class="help-block"
+                    >
+                    Please enter a valid email
+
+                    </span>
+
+
+                  </div>
+
+
+
+                  <div class="form-group form-signup p-2">
+                    <input  _ngcontent-c0="" class="form-control form-control-lg " placeholder="Password"
+                    type="text" id="password" formControlName="password" />
+                    <span *ngIf="!password?.valid && password?.touched"
+                    class="help-block"
+                    >
+                    Password is required and must have more than 4 characters!
+
+                    </span>
+
+
+                  </div>
+
+                  <div class="form-group p-2">
+                    <button type="submit" class="btn btn-primary" (ngSubmit)="signupUser()">Sign Up</button>
+
+
+                  </div>
+
+
+
+
+
+                 </form>
+
+          </div>
+
+     </div>
+
+
+
+
+</div>
+
